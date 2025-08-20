@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เกม Quiz: เศรษฐศาสตร์ดิจิทัลและสหกรณ์</title>
+  <style>
+    body {
+      font-family: "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      text-align: center;
+      padding: 40px;
+    }
+    .quiz-box {
+      max-width: 650px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    h1 { 
+      color: #2c3e50; 
+      margin-bottom: 20px; 
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #3498db;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #2980b9; }
+    .result {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h1>🎮 เกม Quiz: เศรษฐศาสตร์ดิจิทัลและสหกรณ์</h1>
+    <p id="question"></p>
+    <div id="answer-buttons"></div>
+    <div class="result" id="result"></div>
+    <button id="next-btn" style="display:none;">ถัดไป ➡️</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "💻 เศรษฐกิจดิจิทัลต่างจากเศรษฐกิจดั้งเดิมอย่างไร?",
+        answers: [
+          { text: "ใช้แรงงานมากกว่า", correct: false },
+          { text: "ใช้เทคโนโลยีและข้อมูลเป็นตัวขับเคลื่อน", correct: true },
+          { text: "พึ่งพาทรัพยากรธรรมชาติมากกว่า", correct: false }
+        ]
+      },
+      {
+        question: "🌐 Network Effect หมายถึงอะไร?",
+        answers: [
+          { text: "มูลค่าลดลงเมื่อมีคนใช้มากขึ้น", correct: false },
+          { text: "มูลค่าเพิ่มขึ้นเมื่อมีคนใช้มากขึ้น", correct: true },
+          { text: "ระบบเครือข่ายอินเทอร์เน็ต", correct: false }
+        ]
+      },
+      {
+        question: "🤝 สหกรณ์มีเป้าหมายหลักคืออะไร?",
+        answers: [
+          { text: "สร้างกำไรสูงสุด", correct: false },
+          { text: "กระจายผลประโยชน์ให้สมาชิก", correct: true },
+          { text: "แข่งขันกับภาครัฐ", correct: false }
+        ]
+      },
+      {
+        question: "🔗 Blockchain เกี่ยวข้องกับอะไร?",
+        answers: [
+          { text: "ระบบฐานข้อมูลแบบกระจาย", correct: true },
+          { text: "การปลูกพืช", correct: false },
+          { text: "การท่องเที่ยว", correct: false }
+        ]
+      },
+      {
+        question: "📊 Big Data มีบทบาทอย่างไรในเศรษฐกิจดิจิทัล?",
+        answers: [
+          { text: "ช่วยวิเคราะห์และสร้างคุณค่าจากข้อมูล", correct: true },
+          { text: "ใช้เพื่อความบันเทิงเท่านั้น", correct: false },
+          { text: "ทำให้ข้อมูลหายไป", correct: false }
+        ]
+      },
+      {
+        question: "🛒 E-commerce คืออะไร?",
+        answers: [
+          { text: "การค้าขายผ่านระบบดิจิทัลออนไลน์", correct: true },
+          { text: "การซื้อขายหน้าร้านแบบดั้งเดิม", correct: false },
+          { text: "ระบบการศึกษาออนไลน์", correct: false }
+        ]
+      },
+      {
+        question: "👥 สมาชิกสหกรณ์มีสิทธิสำคัญอะไร?",
+        answers: [
+          { text: "สิทธิในการออกเสียงและตัดสินใจร่วม", correct: true },
+          { text: "สิทธิในการกำหนดราคาตลาดโลก", correct: false },
+          { text: "สิทธิในการเป็นเจ้าของบริษัทเอกชน", correct: false }
+        ]
+      },
+      {
+        question: "💰 FinTech คืออะไร?",
+        answers: [
+          { text: "เทคโนโลยีทางการเงิน", correct: true },
+          { text: "เทคโนโลยีด้านอาหาร", correct: false },
+          { text: "เทคโนโลยีการขนส่ง", correct: false }
+        ]
+      },
+      {
+        question: "🏢 สหกรณ์แตกต่างจากบริษัทเอกชนอย่างไร?",
+        answers: [
+          { text: "มุ่งเน้นผลประโยชน์ของสมาชิก", correct: true },
+          { text: "เน้นกำไรสูงสุดให้ผู้ถือหุ้น", correct: false },
+          { text: "ไม่มีระบบการบริหารจัดการ", correct: false }
+        ]
+      },
+      {
+        question: "🚀 Digital Economy ช่วยพัฒนาสังคมอย่างไร?",
+        answers: [
+          { text: "เพิ่มโอกาสทางธุรกิจและการเข้าถึงบริการ", correct: true },
+          { text: "ลดความโปร่งใสทางเศรษฐกิจ", correct: false },
+          { text: "ทำให้คนเลิกใช้เทคโนโลยี", correct: false }
+        ]
+      }
+    ];
+
+    const questionElement = document.getElementById("question");
+    const answerButtons = document.getElementById("answer-buttons");
+    const nextButton = document.getElementById("next-btn");
+    const resultElement = document.getElementById("result");
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      nextButton.innerHTML = "ถัดไป ➡️";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      resetState();
+      let currentQuestion = questions[currentQuestionIndex];
+      let questionNo = currentQuestionIndex + 1;
+      questionElement.innerHTML = "❓ ข้อที่ " + questionNo + ": " + currentQuestion.question;
+
+      currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerHTML = answer.text;
+        answerButtons.appendChild(button);
+        button.addEventListener("click", () => selectAnswer(answer, button));
+      });
+    }
+
+    function resetState() {
+      nextButton.style.display = "none";
+      resultElement.innerHTML = "";
+      while (answerButtons.firstChild) {
+        answerButtons.removeChild(answerButtons.firstChild);
+      }
+    }
+
+    function selectAnswer(answer, button) {
+      if (answer.correct) {
+        score++;
+        button.style.background = "#2ecc71";
+      } else {
+        button.style.background = "#e74c3c";
+      }
+      Array.from(answerButtons.children).forEach(btn => btn.disabled = true);
+      nextButton.style.display = "block";
+    }
+
+    function showResult() {
+      resetState();
+      questionElement.innerHTML = "🎉 คุณทำแบบทดสอบเสร็จแล้ว!";
+      resultElement.innerHTML = `คะแนนของคุณ: ${score} / ${questions.length} ⭐`;
+      nextButton.innerHTML = "🔄 เล่นอีกครั้ง";
+      nextButton.style.display = "block";
+    }
+
+    function handleNextButton() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    nextButton.addEventListener("click", () => {
+      if (currentQuestionIndex < questions.length) {
+        handleNextButton();
+      } else {
+        startQuiz();
+      }
+    });
+
+    startQuiz();
+  </script>
+</body>
+</html>
